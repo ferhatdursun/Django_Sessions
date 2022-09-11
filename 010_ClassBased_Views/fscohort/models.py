@@ -17,6 +17,6 @@ class Student(models.Model):
     gender = models.CharField(max_length=50, choices=GENDER)
     number = models.IntegerField(unique=True, blank=True, null=True)
     image = models.ImageField(upload_to="student/", default="avatar.png")
- 
+    slug = models
     def __str__(self):
         return f"{self.number} {self.first_name} {self.last_name}"

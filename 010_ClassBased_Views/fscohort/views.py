@@ -1,72 +1,76 @@
-from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .forms import StudentForm
 from .models import Student
-from django.views.generic import (
-    TemplateView, 
-    ListView, 
-    DetailView, 
-    CreateView,
-    UpdateView,
-    DeleteView,
-    )
-
-
+from django.views.generic import TemplateView, ListView, DetailView,CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 def home(request):
     return render(request, "fscohort/home.html")
 
+    
 class HomeView(TemplateView):
     template_name = "fscohort/home.html"
-    
+
     def get_context_data(self,  **kwargs):
         context = super().get_context_data(**kwargs)
         context['students'] = Student.objects.all()
         return context
-    
-    
+
+
 def student_list(request):
+
     students = Student.objects.all()
+
     context = {
         "students":students
     }
+
     return render(request, "fscohort/student_list.html", context)
+
+
 
 class StudentListView(ListView):
     model = Student
-    
-    # queryset = Student.objects.filter(number=123)
+    # context_object_name = "students"
+    # queryset= Student.objects.filter()
 
     # def get_queryset(self):
-    #     queryset = super().get_queryset(self)
+    #     queryset = Studen.objects.filter(number=123)
     #     return queryset
-    
+
+
+
+
 
 def student_add(request):
     form = StudentForm()
+
     if request.method == "POST":
         form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
-            student = form.save()
+            form.save()
             return redirect("list")
+
+
     context = {
+
        "form":form
     }
-    return render(request, "fscohort/student_add.html", context)
 
+    return render(request, "fscohort/student_add.html", context)
 
 class StudentCreateView(CreateView):
     model = Student
     form_class = StudentForm
     template_name = "fscohort/student_add.html"
     success_url = reverse_lazy("list")
-    
+
     def form_valid(self, form):
         self.object = form.save()
         if not self.object.number:
             self.object.number = 999
+        self.object.save()
         return super().form_valid(form)
-
 
 def student_detail(request,id):
     student = Student.objects.get(id=id)
@@ -79,36 +83,46 @@ def student_detail(request,id):
 
 class StudentDetailView(DetailView):
     model = Student
-    pk_url_kwarg = 'id'
-
+    #! pk_url_kwarg="id" # urls.py sayfasinda path('detail/<int:id>/') yaziyorsa bunu yazmamiz gerekiyor ama direkt pk yaziyorsa gerek yok.
 
 def student_update(request, id):
+
     student = Student.objects.get(id=id)
+
     form = StudentForm(instance=student)
+
     if request.method == "POST":
         form = StudentForm(request.POST, request.FILES, instance=student)
         if form.is_valid():
             form.save()
             return redirect("list")
+
     context= {
+
         "student":student,
         "form":form
     }
-    return render(request, "fscohort/student_update.html", context)
 
+    return render(request, "fscohort/student_update.html", context)
 
 class StudentUpdateView(UpdateView):
     model = Student
     form_class = StudentForm
     template_name = "fscohort/student_update.html"
     success_url = reverse_lazy("list")
-  
-    
+
+
+
 def student_delete(request, id):
+
     student = Student.objects.get(id=id)
+
     if request.method == "POST":
+
+
         student.delete()
         return redirect("list")
+
     context= {
         "student":student
     }
@@ -117,5 +131,6 @@ def student_delete(request, id):
 
 class StudentDeleteView(DeleteView):
     model = Student
-    template_name = 'fscohort/student_delete.html'
+    template_name = "fscohort/student_delete.html"
     success_url = reverse_lazy("list")
+

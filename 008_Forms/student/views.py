@@ -1,18 +1,17 @@
 from django.shortcuts import render, redirect
 from .forms import StudentForm
 from .models import Student
-
+# Create your views here.
 
 def index(request):
-    return render(request, 'student/index.html')
-
+    return render(request, "student/index.html")
 
 # def student_page(request):
-#     return render(request, 'student/student.html')
+#      return render(request, "student/student.html")
 
 # def student_page(request):
 #     form = StudentForm()
-#     if request.method == 'POST':
+#     if request.method == "POST":
 #         print(request.method)
 #         print(request.POST)
 #         print(request.FILES)
@@ -25,14 +24,14 @@ def index(request):
 #                 "number": form.cleaned_data.get("number"),
 #                 "profile_pic": form.cleaned_data.get("profile_img")
 #             }
-#             # first_name=student_data["first_name"]
-#             student = Student(**student_data)
+#             student = Student(**student_data) # first_name=student_data["first_name"]
 #             student.save()
-#             return redirect('index')
+#             return redirect("index")
 #     context = {
 #         'form': form,
 #     }
 #     return render(request, 'student/student.html', context)
+
 
 def student_page(request):
     form = StudentForm()
@@ -40,9 +39,9 @@ def student_page(request):
         form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect("index")
 
     context = {
-        'form': form,
+        "form" : form,
     }
     return render(request, 'student/student.html', context)

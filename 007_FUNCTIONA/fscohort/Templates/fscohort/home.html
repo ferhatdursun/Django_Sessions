@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'fscohort/css/style.css' %}" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>{{company | upper}}</h1>
+    <h1>{{dict1.django}}</h1>
+    <img
+      src="{% static 'fscohort/images/indir.png' %}"
+      width="300"
+      alt="Example"
+    />
+
+    <ul>
+      {% for i in my_list%} {% if i == 2 %}
+      <li>ferhat</li>
+      {% else %}
+      <li>{{i}}</li>
+      {%endif%} {% endfor %}
+    </ul>
+
+    {% comment %} comment turkey {% endcomment %}
+  </body>
+</html>

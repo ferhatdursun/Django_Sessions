@@ -1,8 +1,9 @@
-{% extends "student/base.html" %} 
+{% extends "student/base.html"%}
+
 {% block container %}
 <form action="" method="POST" enctype="multipart/form-data">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="OK" />
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="OK"/>
 </form>
-{% endblock container %}
+{%endblock container%}
